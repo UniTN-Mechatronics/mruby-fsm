@@ -41,7 +41,7 @@ module FSM
     # @param [String] name The state name
     # @raise ArgumentError unless +state+ is a String
     def initialize(name)
-      raise ArumentError unless name.kind_of? String
+      raise ArgumentError, "State name must be a String (got #{name.class})" unless name.kind_of? String
       @name = name
       @testing = false
       @params  = nil
