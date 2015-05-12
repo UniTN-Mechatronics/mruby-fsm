@@ -55,7 +55,7 @@ module FSM
     # @raise NotImplementedError
     def action
       raise NotImplementedError unless @testing
-      sleep 0.1
+      Metronome.sleep 0.1
       @params.update if @params.respond_to? :update
       print '.'
       @params.current_state = @name

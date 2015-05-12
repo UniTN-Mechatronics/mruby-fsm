@@ -14,6 +14,5 @@ MRuby::Build.new do |conf|
   conf.gembox 'default'
   conf.gem File.dirname(__FILE__)
   conf.gem :github => "ksss/mruby-signal"
-  conf.gem :github => "matsumoto-r/mruby-sleep"
   conf.cc.defines = %w(ENABLE_READLINE)
 end

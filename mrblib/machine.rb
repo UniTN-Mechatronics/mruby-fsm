@@ -138,7 +138,7 @@ module FSM
             @states[@params.current_state].action
             :stop if previous_state != @params.current_state || @shutdown
           end
-          sleep(@states[@params.current_state].timing / 2.0) while @metronome.active? 
+          Metronome.sleep(@states[@params.current_state].timing / 2.0) while @metronome.active? 
           warn "State #{@params.current_state} is stopping metronome!"
         else
           @states[@params.current_state].action
