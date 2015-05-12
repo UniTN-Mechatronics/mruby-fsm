@@ -80,9 +80,15 @@ module FSM
     # will set the +@shutdown+ iv to +true+, stopping the execution of
     # loop in {#run} after the forthcoming loop.
     # @param [ParamsStruct] args A Struct-like object containing the parameters.
-    def initialize(args)
-      raise ArgumentError unless args.respond_to? :current_state
-      @params               = args
+    def initialize(*args)
+      if args[0].respond_to? :current_state
+        @params  = args[0]
+      elsif args.kind_of? Array
+        Parameters = ParamsStruct.new(*args)
+        @params = Parameters.new
+      else
+        raise ArgumentError, "Need either an Array of Symbols or a ParamsStruct"
+      end
       @shutdown             = false
       @params.current_state = nil
       Signal.trap(:INT) {puts "\n-- Shutting down..."; @shutdown = true}

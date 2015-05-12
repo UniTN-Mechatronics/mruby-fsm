@@ -1,6 +1,4 @@
 
-Parameters = ParamsStruct.new(:count, :par2)
-
 class StateIdle < FSM::State
   def action
     puts "in #{@name}, #{@params.count}"
@@ -24,11 +22,9 @@ end
 
 
 
-
-pars       = Parameters.new
-pars.count = 0
-pars.par2  = "test"
-m          = FSM::Machine.new pars
+m = FSM::Machine.new(:count, :par2)
+m.params[:count] = 0
+m.params[:par2] = "Test"
 
 idle_state = StateIdle.new "Idle"
 idle_state.timing = 0.1
