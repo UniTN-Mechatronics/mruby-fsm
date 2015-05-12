@@ -1,6 +1,6 @@
 #*************************************************************************#
 #                                                                         #
-# ftp.rb - mruby gem provoding ftp access                                 #
+# machine.rb - mruby gem provoding FSM                                    #
 # Copyright (C) 2015 Paolo Bosetti and Matteo Ragni,                      #
 # paolo[dot]bosetti[at]unitn.it and matteo[dot]ragni[at]unitn.it          #
 # Department of Industrial Engineering, University of Trento              #
