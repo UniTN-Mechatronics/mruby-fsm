@@ -52,7 +52,7 @@ static mrb_value mrb_ualarm(mrb_state *mrb, mrb_value self) {
   useconds_t remaining;
   mrb_get_args(mrb, "ii", &initial, &recurring);
   if (initial < 0 || recurring < 0) {
-    mrb_raise(mrb, E_RUNTIME_ERROR, "Positive values only!");
+    mrb_raise(mrb, E_ARGUMENT_ERROR, "Positive values only!");
   }
   remaining = ualarm((useconds_t)initial, (useconds_t)recurring);
   return mrb_fixnum_value(remaining);
@@ -63,7 +63,7 @@ static mrb_value mrb_alarm(mrb_state *mrb, mrb_value self) {
   useconds_t remaining;
   mrb_get_args(mrb, "i", &delay);
   if (delay < 0) {
-    mrb_raise(mrb, E_RUNTIME_ERROR, "Positive values only!");
+    mrb_raise(mrb, E_ARGUMENT_ERROR, "Positive values only!");
   }
   remaining = alarm((useconds_t)delay);
   return mrb_fixnum_value(remaining);
