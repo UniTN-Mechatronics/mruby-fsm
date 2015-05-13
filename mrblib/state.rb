@@ -48,12 +48,24 @@ module FSM
       @timing  = 0
     end
     
+    def in_loop(&block)
+      define_singleton_method(:run_in_loop, &block)
+    end
+    
+    def on_enter(&block)
+      define_singleton_method(:run_on_enter, &block)
+    end
+    
+    def on_exit(&block)
+      define_singleton_method(:run_on_exit, &block)
+    end
+    
     # Define actions to carry out while in current state. Implementation of 
     # this method shall explicitly set the {EPC::Machine#params}.current_state
     # to the name of the next invoked state.
     # @return [Object] To be defined yet
     # @raise NotImplementedError
-    def action
+    def run_in_loop
       raise NotImplementedError unless @testing
       Metronome.sleep 0.1
       @params.update if @params.respond_to? :update
@@ -63,8 +75,12 @@ module FSM
     
     # Action on state enter.
     # @return [String] Something to be printed
-    def on_enter
+    def run_on_enter
       "> Entering #{@name} state."
+    end
+    
+    def run_on_exit
+      "> Exiting #{@name} state."
     end
     
     def transition_to(state)

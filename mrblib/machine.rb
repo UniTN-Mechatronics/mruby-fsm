@@ -17,7 +17,9 @@
 #                                                                         #
 #*************************************************************************#
 
-alias :warn :puts
+def warn(*args)
+  puts(*args) if $debug
+end
 
 # General container for StateMachine status parameters. With respect to a 
 # plain Struct, this forces the presence of a +:current_state+ key, used by
@@ -133,7 +135,7 @@ module FSM
       previous_state = ''
       begin # main loop
         if @params.current_state != previous_state then
-          puts @states[@params.current_state].on_enter
+          puts @states[@params.current_state].run_on_enter
         end
         previous_state = @params.current_state
         if @states[@params.current_state].timing > 0 then
@@ -141,13 +143,16 @@ module FSM
           @metronome.step = @states[@params.current_state].timing
           @metronome.start do |i|
             previous_state = @params.current_state
-            @states[@params.current_state].action
-            :stop if previous_state != @params.current_state || @shutdown
+            @states[@params.current_state].run_in_loop
+            if (previous_state != @params.current_state) || @shutdown then
+              @states[previous_state].run_on_exit
+              :stop
+            end
           end
-          Metronome.sleep(@states[@params.current_state].timing / 2.0) while @metronome.active? 
+          Metronome.sleep(@states[@params.current_state].timing / 5.0) while @metronome.active? 
           warn "State #{@params.current_state} is stopping metronome!"
         else
-          @states[@params.current_state].action
+          @states[@params.current_state].run_in_loop
         end
         @shutdown = true unless @states[@params.current_state]
       end until @shutdown
