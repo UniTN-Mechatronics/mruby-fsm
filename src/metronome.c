@@ -32,10 +32,6 @@
 
 #include "mruby.h"
 #include "mruby/variable.h"
-#include "mruby/string.h"
-#include "mruby/data.h"
-#include "mruby/class.h"
-#include "mruby/value.h"
 
 mrb_value mrb_sleep(mrb_state *mrb, mrb_value self) {
   time_t beg, end;

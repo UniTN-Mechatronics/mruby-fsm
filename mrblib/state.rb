@@ -67,6 +67,10 @@ module FSM
       "> Entering #{@name} state."
     end
     
+    def transition_to(state)
+      @params.current_state = state
+    end
+    
     # Give a state description.
     # @return [String] A description of the current state
     def inspect

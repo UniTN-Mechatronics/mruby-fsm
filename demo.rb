@@ -1,10 +1,10 @@
 
 class StateIdle < FSM::State
   def action
-    puts "in #{@name}, #{@params.count}"
-    @params.count += 1
-    if @params.count > 50
-      @params.current_state = 'Stop'
+    puts "in #{name}, iteration #{params.count}"
+    params.count += 1
+    if params.count > 50
+      transition_to 'Stop'
     end
   rescue => e
     p e
@@ -16,15 +16,15 @@ class StateStop < FSM::State
     puts "Exiting"
   end
   def action
-    @params.current_state = nil
+    transition_to nil
   end
 end
 
 
 
 m = FSM::Machine.new(:count, :par2)
-m.params[:count] = 0
-m.params[:par2] = "Test"
+m.params.count = 0
+m.params.par2 = "Test"
 
 idle_state = StateIdle.new "Idle"
 idle_state.timing = 0.1
