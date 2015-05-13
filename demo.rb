@@ -26,7 +26,7 @@ m.add idle_state
 
 # Repeat for other states:
 stop_state = State.new "Stop"
-stop_state.in_loop { transition_to nil }
+stop_state.in_loop { stop_machine }
 stop_state.on_exit { puts "> Exiting #{self.name}"}
 m.add stop_state
 

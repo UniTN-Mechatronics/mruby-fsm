@@ -77,6 +77,10 @@ module FSM
       @params.current_state = state
     end
     
+    def stop_machine
+      self.transition_to nil
+    end
+    
     # Give a state description.
     # @return [String] A description of the current state
     def inspect
