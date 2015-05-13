@@ -135,7 +135,7 @@ module FSM
       previous_state = ''
       begin # main loop
         if @params.current_state != previous_state then
-          puts @states[@params.current_state].run_on_enter
+          @states[@params.current_state].run_on_enter
         end
         previous_state = @params.current_state
         if @states[@params.current_state].timing > 0 then

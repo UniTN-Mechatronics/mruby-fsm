@@ -48,16 +48,10 @@ module FSM
       @timing  = 0
     end
     
-    def in_loop(&block)
-      define_singleton_method(:run_in_loop, &block)
-    end
-    
-    def on_enter(&block)
-      define_singleton_method(:run_on_enter, &block)
-    end
-    
-    def on_exit(&block)
-      define_singleton_method(:run_on_exit, &block)
+    %w|in_loop on_enter on_exit|.each do |method|
+      define_method(method) do |&block|
+        define_singleton_method("run_#{method}", &block)
+      end
     end
     
     # Define actions to carry out while in current state. Implementation of 
@@ -75,13 +69,9 @@ module FSM
     
     # Action on state enter.
     # @return [String] Something to be printed
-    def run_on_enter
-      "> Entering #{@name} state."
-    end
+    def run_on_enter; end
     
-    def run_on_exit
-      "> Exiting #{@name} state."
-    end
+    def run_on_exit; end
     
     def transition_to(state)
       @params.current_state = state
