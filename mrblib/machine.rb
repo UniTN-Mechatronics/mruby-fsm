@@ -144,16 +144,14 @@ module FSM
           @metronome.start do |i|
             previous_state = @params.current_state
             @states[@params.current_state].run_in_loop
-            if (previous_state != @params.current_state) || @shutdown then
-              @states[previous_state].run_on_exit
-              :stop
-            end
+            :stop if @params.current_state.nil? || (previous_state != @params.current_state)
           end
-          Metronome.sleep(@states[@params.current_state].timing / 5.0) while @metronome.active? 
+          Metronome.sleep(@states[@params.current_state].timing / 10.0) while @metronome.active? 
           warn "State #{@params.current_state} is stopping metronome!"
         else
           @states[@params.current_state].run_in_loop
         end
+        @states[previous_state].run_on_exit
         @shutdown = true unless @states[@params.current_state]
       end until @shutdown
       puts "-- Done shutdown."
