@@ -14,7 +14,8 @@ MRuby::Build.new do |conf|
   conf.gembox 'default'
   conf.gem File.dirname(__FILE__)
   conf.gem :github => "ksss/mruby-signal"
-  conf.gem :git => "~/usb/git/mruby-raspberry.git"
+  #conf.gem :git => "~/usb/git/mruby-raspberry.git"
   conf.gem "tmp/mruby/mrbgems/mruby-time"
+  conf.gem :github => "take-cheeze/mruby-marshal"
   conf.cc.defines = %w(ENABLE_READLINE)
 end
