@@ -17,6 +17,11 @@
 /*                                                                         */
 /***************************************************************************/
 
+#ifdef __linux
+#define _GNU_SOURCE
+#include <stdio.h>
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -30,6 +35,7 @@
 #include <sys/time.h>
 #endif
 #include <errno.h>
+
 
 #include "mruby.h"
 #include "mruby/variable.h"
@@ -50,12 +56,11 @@ mrb_value mrb_sleep(mrb_state *mrb, mrb_value self) {
   ts.tv_nsec = (mrb_int)((period - ts.tv_sec) * 1e9);
   if (0 != nanosleep(&ts, &rts)) {
     double actual = rts.tv_sec + rts.tv_nsec / (double)1e9;
-    mrb_value actual_v = mrb_float_value(mrb, actual);
+    mrb_value exc, actual_v = mrb_float_value(mrb, actual);
     char *buf = NULL;
     asprintf(&buf, "Sleep interrupted (errno: '%s'). Slept for %f s",
              strerror(errno), actual);
-    mrb_value exc =
-        mrb_exc_new(mrb, mrb_class_get(mrb, "SleepError"), buf, strlen(buf));
+    exc = mrb_exc_new(mrb, mrb_class_get(mrb, "SleepError"), buf, strlen(buf));
     mrb_iv_set(mrb, exc, mrb_intern_lit(mrb, "@actual"), actual_v);
     free(buf);
     mrb_exc_raise(mrb, exc);
