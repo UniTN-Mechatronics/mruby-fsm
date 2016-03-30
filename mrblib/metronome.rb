@@ -126,7 +126,7 @@ module Metronome
     # of SIGALRM signal.
     def stop
       Metronome::ualarm(0, 0)
-      Signal.trap(:ALRM, "DEFAULT")
+      Signal.trap(:ALRM) {} #, "DEFAULT")
       @active = false
       @lock = false
     end
