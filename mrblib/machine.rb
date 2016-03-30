@@ -17,10 +17,6 @@
 #                                                                         #
 #*************************************************************************#
 
-def warn(*args)
-  puts(*args) if $debug
-end
-
 # General container for StateMachine status parameters. With respect to a 
 # plain Struct, this forces the presence of a +:current_state+ key, used by
 # the {FSM::Machine} for determining which state is currently active.

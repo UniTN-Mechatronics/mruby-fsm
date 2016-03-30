@@ -36,7 +36,6 @@
 #endif
 #include <errno.h>
 
-
 #include "mruby.h"
 #include "mruby/variable.h"
 #include "mruby/string.h"
@@ -95,6 +94,8 @@ static mrb_value mrb_alarm(mrb_state *mrb, mrb_value self) {
   return mrb_fixnum_value(remaining);
 }
 
+extern mrb_value mrb_k_warn(mrb_state *mrb, mrb_value self);
+
 void mrb_mruby_fsm_gem_init(mrb_state *mrb) {
   struct RClass *metro;
   metro = mrb_define_module(mrb, "Metronome");
@@ -104,6 +105,10 @@ void mrb_mruby_fsm_gem_init(mrb_state *mrb) {
   mrb_define_class_method(mrb, metro, "pause", mrb_pause, MRB_ARGS_REQ(0));
   mrb_load_string(mrb,
                   "class SleepError < Exception; attr_reader :actual; end");
+                  
+  struct RClass *krn;
+  krn = mrb->kernel_module;
+  mrb_define_method(mrb, krn, "warn", mrb_k_warn, MRB_ARGS_REQ(1));
 }
 
 void mrb_mruby_fsm_gem_final(mrb_state *mrb) {}
