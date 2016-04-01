@@ -121,6 +121,11 @@ module FSM
       return check
     end
     
+    define_method(:in_each_state) do |&block|
+      define_singleton_method("run_#{in_each_state}", &block)
+    end
+    def run_in_each_state; end
+    
     # Start the execution. CTRL-C (SIGINT) shuts down the loop in a controlled 
     # manner.
     # If the current state has its {FSM::State.timing} variable set to something
@@ -139,6 +144,7 @@ module FSM
           @metronome.step = @states[@params.current_state].timing
           @metronome.start do |i|
             previous_state = @params.current_state
+            self.run_in_each_state
             @states[@params.current_state].run_in_loop
             :stop if @params.current_state.nil? || (previous_state != @params.current_state) || @shutdown
           end
@@ -147,7 +153,13 @@ module FSM
           end
           warn "State #{@params.current_state} is stopping metronome!"
         else
-          @states[@params.current_state].run_in_loop
+          while true do
+            previous_state = @params.current_state
+            self.run_in_each_state
+            @states[@params.current_state].run_in_loop
+            break if @params.current_state.nil? || (previous_state != @params.current_state) || @shutdown
+          end
+          warn "State #{@params.current_state} is stopping metronome!"
         end
         @states[previous_state].run_on_exit
         @shutdown = true unless @states[@params.current_state]
