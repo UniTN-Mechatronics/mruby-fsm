@@ -121,9 +121,6 @@ module FSM
       return check
     end
     
-    define_method(:in_each_state) do |&block|
-      define_singleton_method("run_#{in_each_state}", &block)
-    end
     def run_in_each_state; end
     
     # Start the execution. CTRL-C (SIGINT) shuts down the loop in a controlled 
