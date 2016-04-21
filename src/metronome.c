@@ -97,7 +97,7 @@ static mrb_value mrb_alarm(mrb_state *mrb, mrb_value self) {
 extern mrb_value mrb_k_warn(mrb_state *mrb, mrb_value self);
 
 void mrb_mruby_fsm_gem_init(mrb_state *mrb) {
-  struct RClass *metro;
+  struct RClass *metro, *krn;
   metro = mrb_define_module(mrb, "Metronome");
   mrb_define_class_method(mrb, metro, "ualarm", mrb_ualarm, MRB_ARGS_REQ(2));
   mrb_define_class_method(mrb, metro, "alarm", mrb_alarm, MRB_ARGS_REQ(1));
@@ -106,7 +106,6 @@ void mrb_mruby_fsm_gem_init(mrb_state *mrb) {
   mrb_load_string(mrb,
                   "class SleepError < Exception; attr_reader :actual; end");
                   
-  struct RClass *krn;
   krn = mrb->kernel_module;
   mrb_define_method(mrb, krn, "warn", mrb_k_warn, MRB_ARGS_REQ(1));
 }
