@@ -6,4 +6,5 @@ MRuby::Gem::Specification.new('mruby-fsm') do |spec|
   spec.description = spec.summary
   spec.homepage = "https://github.com/UniTN-Mechatronics/mruby-fsm"
   spec.add_dependency 'mruby-signal'
+  spec.add_dependency 'mruby-struct'
 end
